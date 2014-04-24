@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load opt_audit %}
+"""列表页面必须声明这个块定义"""
+{% block body_header_fixed %} class="fixed"{% endblock %}
+{% block head_style %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/script/skins/ui1007s.css"/>
+<link rel="stylesheet" type="text/css" href="/script/jscal/css/jscal2.css" />
+    <script type="text/css">
+        table thead {
+            position: fixed;
+        }
+    </script>
+{% endblock%}
+{% block head_script %}
+{{ block.super }}
+<script type="text/javascript" src="/script/jscal/jscal2.js"></script>
+<script type="text/javascript" src="/script/jscal/lang/cn.js"></script>
+<script type="text/javascript" src="/script/jquery.fixedtableheader.min.js"></script>
+<script type="text/javascript">
+
+ $(document).ready(function()
+        {
+            $(".tb1").fixedtableheader({headerrowsize: 2 });
+
+             $(window).scroll(function(){
+              $('#serach-console').hide();
+              $('#header-console').height('67px');
+              $('#opera-console h3').removeClass('on1');
+
+              $('header #opera-console h3:first').data('is_open', false);
+
+
+ });
+
+$('.data-list tr').unbind();
+changMQ();
+        });
+function changMQ(){
+      a = $("#year").val();
+      b = $("#month").val();
+     if (a == 2012 & b == 1){
+         $("#ago").hide();
+    }
+}
+</script>
+{% endblock %}
+{% block body_search %}
+<section id="serach-console">
+    <hgroup>
+        <form action="?method=search" method="get">
+            {% ifequal unit 1 %}
+            <select name="sunit">
+            <option value="2"{% ifequal sunit 2%} selected{% endifequal %}>辽宁省</option>
+            <option value="3"{% ifequal sunit 3%} selected{% endifequal %}>吉林省</option>
+            <option value="4"{% ifequal sunit 4%} selected{% endifequal %}>河北省</option>
+            </select>
+        {% endifequal %}
+        &nbsp;&nbsp;
+            <select id="year" name="year">
+                <option value="2012" {% if yy == "2012" %} selected{%endif%} >2012</option>
+                <option value="2013" {% if yy == "2013" %} selected{%endif%} >2013</option>
+                <option value="2014" {% if yy == "2014" %} selected{%endif%} >2014</option>
+                <option value="2015" {% if yy == "2015" %} selected{%endif%} >2015</option>
+                <option value="2016" {% if yy == "2016" %} selected{%endif%} >2016</option>
+                <option value="2017" {% if yy == "2017" %} selected{%endif%} >2017</option>
+            </select>
+            年
+            &nbsp;&nbsp;
+        <select id="month" name="month">
+                <option value="1" {% if mm == 1 %} selected{%endif%} >1</option>
+                <option value="2" {% if mm == 2 %} selected{%endif%} >2</option>
+                <option value="3" {% if mm == 3 %} selected{%endif%} >3</option>
+                <option value="4" {% if mm == 4 %} selected{%endif%} >4</option>
+                <option value="5" {% if mm == 5 %} selected{%endif%} >5</option>
+                <option value="6" {% if mm == 6 %} selected{%endif%} >6</option>
+                <option value="7" {% if mm == 7 %} selected{%endif%} >7</option>
+                <option value="8" {% if mm == 8 %} selected{%endif%} >8</option>
+                <option value="9" {% if mm == 9 %} selected{%endif%} >9</option>
+                <option value="10" {% if mm == 10 %} selected{%endif%} >10</option>
+                <option value="11" {% if mm == 11 %} selected{%endif%} >11</option>
+                <option value="12" {% if mm == 12 %} selected{%endif%} >12</option>
+            </select>
+            月&nbsp;&nbsp;
+            <span id="ago">
+                <input type="button" value="上个月" class="btn" OnClick="location.href='?year={{ yy1 }}&month={{ mm1 }}&sunit={{ sunit }}'">&nbsp;
+            </span>
+            <input type="button" value="下个月" class="btn" OnClick="location.href='?year={{ yy2 }}&month={{ mm2 }}&sunit={{ sunit }}'">&nbsp;
+            <input type="submit" class="button" value="查询" />
+        </form>
+    </hgroup>
+</section>
+{% endblock %}
+{% block body_contents %}
+
+<section id="editor-console">
+    <table class="data-list table tb1" width="100%" border="1" cellspacing="0" cellpadding="0" id="businessTable">
+       <thread>
+          <tr>
+            <th rowspan="2" class="tabletitle2">时间</th>
+            <th rowspan="2" class="tabletitle2">地区</th>
+            <th rowspan="2" class="tabletitle2">月任务（单产）</th>
+            <th rowspan="2" class="tabletitle2">员工人数</th>
+            <th colspan="11" class="tabletitle2">百度新增</th>
+            <th colspan="6" nowrap="nowrap" class="tabletitle2" style="background-color: #FFFFCC; background-image: none">百度上线</th>
+            <th colspan="2">PC网站</th>
+            <th colspan="6">移动建站</th>
+            <th rowspan="2" class="tabletitle2">移动建站/百度单产</th>
+            <th rowspan="2" class="tabletitle2">移动建站/盘古建站</th>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">百度单产</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">企业新增单产量</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">自然人新增单产量</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">企业新增单产占比</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">城市新增单产量</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">郊县新增单产量</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">城市新增单产占比</th>
+            <th nowrap="nowrap" >百度实际销售额</th>
+            <th nowrap="nowrap">户均开户额</th>
+            <th nowrap="nowrap">单产任务完成比</th>
+            <th nowrap="nowrap">人均单产</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">未上线总数</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">未上线企业数</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">未上线企业占比</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">已上线数</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">已上线企业数</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">已上线企业占比</th>
+			<th nowrap="nowrap">盘古建站</th>
+            <th nowrap="nowrap">定制网站</th>
+            <th nowrap="nowrap">移动盘古建站</th>
+            <th nowrap="nowrap">定制移动建站</th>
+            <th nowrap="nowrap" style="background-color: #FFFFCC; background-image: none">高级移动建站</th>
+            <th nowrap="nowrap">移动建站总数</th>
+            <th nowrap="nowrap">移动建站上线数</th>
+            <th nowrap="nowrap">移动建站上线率</th>
+        </tr>
+
+       </thread>
+       <tbody>
+        {% for d in datas %}
+            <tr{% ifequal d.unid 100%}
+                    style="background-color:#EBF1DE"
+                    {% else %}
+                    {% ifequal d.unid 200 %}
+                    style="background-color:#C4D79B"
+                    {% endifequal %}
+                  {% endifequal %}>
+            {% if d.time %}
+                <td rowspan="{{ d.rowspan }}">{{ d.time }}</td>
+            {% endif %}
+            <td>{{ d.unit }}</td>
+            <td>{{ d.tasknums|default_if_none:"" }}</td>
+            <td>{{ d.pcount|default_if_none:"" }}</td>
+            <td>{{ d.dl_bd|default_if_none:"" }}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>{{ d.sales_bd|default_if_none:"" }}</td>
+            <td>{{ d.hjkhe|default_if_none:"" }}</td>
+            <td>
+                {% if d.dcrwwcb %}
+                {{ d.dcrwwcb}}%
+                {% else %}
+                {% endif %}
+            </td>
+            <td>{{ d.rjdc|default_if_none:"" }}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>{{ d.dl_pg|default_if_none:"" }}</td>
+            <td>{{ d.dl_dz|default_if_none:"" }}</td>
+            <td>{{ d.dl_3g_pg|default_if_none:"" }}</td>
+            <td>{{ d.dl_3g_dz|default_if_none:"" }}</td>
+            <td>-</td>
+            <td>{{ d.ydjzzs|default_if_none:"" }}</td>
+            <td>{{ d.dl_3g_sx|default_if_none:"" }}</td>
+            <td>{% if d.ydjzsxl %}
+                {{ d.ydjzsxl }}%
+                {% else %}
+                {% endif %}
+            </td>
+            <td>
+                {% if d.yd_dc %}
+                {{ d.yd_dc}}%
+                {% else %}
+                {% endif %}
+            </td>
+            <td>
+                {% if d.yd_jz %}
+                {{ d.yd_jz}}%
+                {% else %}
+                {% endif %}
+                </td>
+            </tr>
+       {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

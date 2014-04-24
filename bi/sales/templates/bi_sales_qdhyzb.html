@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+"""列表页面必须声明这个块定义"""
+{% block body_header_fixed %} class="fixed" {% endblock %}
+{% block head_style %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/script/skins/ui1007s.css"/>
+<link rel="stylesheet" type="text/css" href="/script/jscal/css/jscal2.css"/>
+<style type="text/css">
+	.err{color:#f00;}
+</style>
+{% endblock%}
+
+{% block head_script %}
+{{ block.super }}
+<script type="text/javascript" src="/script/validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/script/apps-10.8.js"></script>
+<script type="text/javascript" src="/script/jscal/jscal2.js"></script>
+<script type="text/javascript" src="/script/jscal/lang/cn.js"></script>
+
+<script type="text/javascript">
+
+</script>
+{% endblock %}
+{% block body_header %}
+<section id="opera-console">
+  <h3>
+   <a href="/v2/bi/sales/stat_ydyjdctj?month={{ mm }}&year={{ yy }}" >返回</a>
+  </h3>
+</section>
+{% endblock%}
+
+{% block body_contents %}
+<section>
+<h2>
+{{ a }} 时间：{{ yy }}年{{ mm }}月
+</h2>&nbsp;&nbsp;
+<form id="operat" action="" method="post">
+  <table class="table" width="100%" cellpadding="0" cellspacing="1">
+    <tr class="tabletitle">
+        <td align="center" nowrap>行业名称</td>
+        <td align="center" nowrap>单量</td>
+        <td align="center" nowrap>占比</td>
+    </tr>
+    {% if not querys %}
+    <tr>
+      <td colspan="11" align="center" style="color: red">没有找到您需要的内容</td>
+    </tr>
+    {% else %}
+     {% for q in querys %}
+         <tr>
+             <td align="center" nowrap>{{ q.1|default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.3|default_if_none:"" }}</td>
+             <td align="center" nowrap>
+                 {% if q.4 %}
+                   {{ q.4 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+        </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+</form>
+</section>
+{% endblock %}
+
+

@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load opt_audit %}
+"""列表页面必须声明这个块定义"""
+{% block body_header_fixed %} class="fixed"{% endblock %}
+{% block head_style %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/script/skins/ui1007s.css"/>
+<link rel="stylesheet" type="text/css" href="/script/jscal/css/jscal2.css" />
+    <script type="text/css">
+        table thead {
+            position: fixed;
+        }
+    </script>
+{% endblock%}
+{% block head_script %}
+{{ block.super }}
+<script type="text/javascript" src="/script/jscal/jscal2.js"></script>
+<script type="text/javascript" src="/script/jscal/lang/cn.js"></script>
+<script type="text/javascript" src="/script/jquery.fixedtableheader.min.js"></script>
+<script type="text/javascript">
+
+ $(document).ready(function()
+        {
+            $(".tb1").fixedtableheader({headerrowsize: 2 });
+
+             $(window).scroll(function(){
+              $('#serach-console').hide();
+              $('#header-console').height('67px');
+              $('#opera-console h3').removeClass('on1');
+
+              $('header #opera-console h3:first').data('is_open', false);
+
+
+ });
+
+$('.data-list tr').unbind();
+changMQ();
+        });
+function changMQ(){
+      a = $("#year").val();
+      b = $("#month").val()
+     if (a == 2012 & b == 1){
+         $("#m").hide();
+    }
+}
+</script>
+{% endblock %}
+{% block body_search %}
+<section id="serach-console">
+    <hgroup>
+        <form action="?method=search" method="get">
+        {% ifequal unit 1 %}
+            <select name="sunit">
+            <option value="2"{% ifequal sunit 2%} selected{% endifequal %}>辽宁省</option>
+            <option value="3"{% ifequal sunit 3%} selected{% endifequal %}>吉林省</option>
+            <option value="4"{% ifequal sunit 4%} selected{% endifequal %}>河北省</option>
+            </select>
+        {% endifequal %}
+        &nbsp;&nbsp;
+            <select id="year" name="year">
+                <option value="2012" {% if yy == "2012" %} selected{%endif%} >2012</option>
+                <option value="2013" {% if yy == "2013" %} selected{%endif%} >2013</option>
+                <option value="2014" {% if yy == "2014" %} selected{%endif%} >2014</option>
+                <option value="2015" {% if yy == "2015" %} selected{%endif%} >2015</option>
+                <option value="2016" {% if yy == "2016" %} selected{%endif%} >2016</option>
+                <option value="2017" {% if yy == "2017" %} selected{%endif%} >2017</option>
+            </select>
+            年
+            &nbsp;&nbsp;
+         <select id="month" name="month">
+                <option value="1" {% if mm == 1 %} selected{%endif%} >1</option>
+                <option value="2" {% if mm == 2 %} selected{%endif%} >2</option>
+                <option value="3" {% if mm == 3 %} selected{%endif%} >3</option>
+                <option value="4" {% if mm == 4 %} selected{%endif%} >4</option>
+                <option value="5" {% if mm == 5 %} selected{%endif%} >5</option>
+                <option value="6" {% if mm == 6 %} selected{%endif%} >6</option>
+                <option value="7" {% if mm == 7 %} selected{%endif%} >7</option>
+                <option value="8" {% if mm == 8 %} selected{%endif%} >8</option>
+                <option value="9" {% if mm == 9 %} selected{%endif%} >9</option>
+                <option value="10" {% if mm == 10 %} selected{%endif%} >10</option>
+                <option value="11" {% if mm == 11 %} selected{%endif%} >11</option>
+                <option value="12" {% if mm == 12 %} selected{%endif%} >12</option>
+            </select>
+            月&nbsp;&nbsp;
+        <span id="m">
+            <input type="button" value="上个月" class="btn" OnClick="location.href='?year={{ yy1 }}&month={{ mm1 }}&sunit={{ sunit }}'">&nbsp;
+        </span>
+            <input type="button" value="下个月" class="btn" OnClick="location.href='?year={{ yy2 }}&month={{ mm2 }}&sunit={{ sunit }}'">&nbsp;
+            <input type="submit" class="button" value="查询" />
+        </form>
+    </hgroup>
+</section>
+{% endblock %}
+{% block body_contents %}
+
+<section id="editor-console">
+    <table class="data-list table tb1" width="100%" border="1" cellspacing="0" cellpadding="0" id="businessTable">
+       <thread>
+       <tr>
+            <th rowspan="2" class="tabletitle2">地区</th>
+            <th colspan="7" nowrap="nowrap" class="tabletitle2">业绩</th>
+            <th colspan="6" style="background-color: #FFFFCC; background-image: none">百度上线</th>
+            <th colspan="7" style="background-color: #FFFFCC; background-image: none">新增类别</th>
+            <th colspan="8">创效</th>
+            <th colspan="2">服务包</th>
+            <th colspan="6" nowrap="nowrap">PC建站</th>
+            <th colspan="9" nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">移动建站</th>
+            <th colspan="7" nowrap="nowrap">百度开户客户数</th>
+            <th colspan="7" nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">销售线索</th>
+        </tr>
+        <tr>
+            <th nowrap="nowrap">实际回款</th>
+            <th nowrap="nowrap">预存款实际销售额</th>
+            <th nowrap="nowrap">新增单产任务</th>
+            <th nowrap="nowrap">新增单产完成</th>
+            <th nowrap="nowrap">单产任务完成率</th>
+            <th nowrap="nowrap">单产环比</th>
+            <th nowrap="nowrap">单产同比</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">未上线总数</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">未上线企业数</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">未上线企业占比</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">已上线数</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">已上线企业数</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">已上线企业占比</th>
+			<th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">企业新增单产量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">自然人新增单产量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">企业新增单产占比</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">城市新增单产量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">城市新增单产占比</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">郊县新增单产量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">郊县新增单产占比</th>
+            <th nowrap="nowrap">商务人数</th>
+            <th nowrap="nowrap">商务人员占比</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">人均单产</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">人均单产环比绝对值</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">人均单产环比率</th>
+            <th nowrap="nowrap">人均创效</th>
+            <th nowrap="nowrap">人均创效环比绝对值</th>
+            <th nowrap="nowrap">人均创效环比率</th>
+            <th nowrap="nowrap">销售量</th>
+            <th nowrap="nowrap">销售额</th>
+            <th nowrap="nowrap">盘古建站销售量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">盘古建站销售额</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">销售量/当月盘古建站</th>
+            <th nowrap="nowrap">定制网站销售量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">定制网站销售额</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">销售量/当月定制</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">移动站销售量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">移动站销售额</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">销售量/当月新单</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">定制移动站销售量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">定制站销售额</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">销售量/当月定制站</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">高级移动站销售量</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">高级移动站销售额</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">销售量/当月高级移动站</th>
+            <th nowrap="nowrap">总数</th>
+            <th nowrap="nowrap">商务</th>
+            <th nowrap="nowrap">实施</th>
+            <th nowrap="nowrap">归巢</th>
+            <th nowrap="nowrap">商务占比</th>
+            <th nowrap="nowrap">实施占比</th>
+            <th nowrap="nowrap">归巢占比</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">可利用销售线索</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">可利用销售线索环比绝对值 </th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">可利用销售线索环比率</th>
+            <th nowrap="nowrap"  style="background-color: #FFFFCC; background-image: none">本月新增有效线索</th>
+
+        </tr>
+
+       </thread>
+       <tbody>
+        {% for q in querys %}
+         <tr {% ifequal q.0 100 %}
+              style="background-color:#EBF1DE"
+              {% else %}
+                 {% ifequal q.0 200 %}
+                 style="background-color:#C4D79B"
+                 {% else %}
+                 style="background-color:#FFFFFF"
+                 {% endifequal %}
+              {% endifequal %}>
+            <td>{{ q.1 }}</td>
+            <td align="center" nowrap>{{q.2|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.3|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.4|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.5|default_if_none:"" }}</td>
+             <td>
+            {% if q.6 %}
+            {{ q.6 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+            <td>
+            {% if q.7 %}
+            {{ q.7 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+            <td>
+            {% if q.8 %}
+            {{ q.8 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td align="center" nowrap><!--商务人数-->{{q.9|default_if_none:"" }}</td>
+              <td>
+            {% if q10 %}
+            {{ q.10 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td align="center" nowrap>{{q.11|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.12|default_if_none:"" }}</td>
+             <td>
+            {% if q.13 %}
+            {{ q.13 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+            <td align="center" nowrap>{{q.14|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.15|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.16|default_if_none:"" }}</td>
+            <td>-</td>
+            <td>-</td>
+            <td align="center" nowrap>{{q.17|default_if_none:"" }}</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td align="center" nowrap>{{q.18|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.19|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.20|default_if_none:"" }}</td>
+            <td align="center" nowrap>{{q.21|default_if_none:"" }}</td>
+             <td>
+            {% if q.22 %}
+            {{ q.22 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+              <td>
+            {% if q.23 %}
+            {{ q.23 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+              <td>
+            {% if q.24 %}
+            {{ q.24 }}%
+            {% else  %}
+            {% endif %}
+            </td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            </tr>
+       {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

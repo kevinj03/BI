@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+"""列表页面必须声明这个块定义"""
+{% block body_header_fixed %} class="fixed" {% endblock %}
+{% block head_style %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/script/skins/ui1007s.css"/>
+<link rel="stylesheet" type="text/css" href="/script/jscal/css/jscal2.css"/>
+<style type="text/css">
+	.err{color:#f00;}
+</style>
+{% endblock%}
+
+{% block head_script %}
+{{ block.super }}
+<script type="text/javascript" src="/script/validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/script/apps-10.8.js"></script>
+<script type="text/javascript" src="/script/jscal/jscal2.js"></script>
+<script type="text/javascript" src="/script/jscal/lang/cn.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function()
+        {
+            changeMQ();
+        });
+function changeMQ(){
+    t = $("#year").val();
+    a = $("#month").val();
+    if(t == 2012 & a == 1){
+        $("#ago").hide();
+    }
+}
+
+</script>
+{% endblock %}
+{% block body_search %}
+<section id="serach-console">
+ <hgroup>
+        <form action="?method=search" method="get">
+            时间
+            <select id="year" name="year">
+                <option value="2012" {% if yy == 2012 %} selected{%endif%} >2012</option>
+                <option value="2013" {% if yy == 2013 %} selected{%endif%} >2013</option>
+                <option value="2014" {% if yy == 2014 %} selected{%endif%} >2014</option>
+                <option value="2015" {% if yy == 2015 %} selected{%endif%} >2015</option>
+                <option value="2016" {% if yy == 2016 %} selected{%endif%} >2016</option>
+                <option value="2017" {% if yy == 2017 %} selected{%endif%} >2017</option>
+            </select>
+            年
+            <select id="month" name="month">
+                <option value="1" {% if mm == 1 %} selected{%endif%} >1</option>
+                <option value="2" {% if mm == 2 %} selected{%endif%} >2</option>
+                <option value="3" {% if mm == 3 %} selected{%endif%} >3</option>
+                <option value="4" {% if mm == 4 %} selected{%endif%} >4</option>
+                <option value="5" {% if mm == 5 %} selected{%endif%} >5</option>
+                <option value="6" {% if mm == 6 %} selected{%endif%} >6</option>
+                <option value="7" {% if mm == 7 %} selected{%endif%} >7</option>
+                <option value="8" {% if mm == 8 %} selected{%endif%} >8</option>
+                <option value="9" {% if mm == 9 %} selected{%endif%} >9</option>
+                <option value="10" {% if mm == 10 %} selected{%endif%} >10</option>
+                <option value="11" {% if mm == 11 %} selected{%endif%} >11</option>
+                <option value="12" {% if mm == 12 %} selected{%endif%} >12</option>
+            </select>
+            月&nbsp;&nbsp;
+            <input type="submit" class="button" value="查询" />&nbsp;&nbsp;
+            <span id="ago">
+                <input type="button" value="上个月" class="btn" OnClick="location.href='?year={{ yy1 }}&month={{ mm1 }}'">&nbsp;
+            </span>
+            <input type="button" value="下个月" class="btn" OnClick="location.href='?year={{ yy2 }}&month={{ mm2 }}'">
+        </form>
+    </hgroup>
+</section>
+{% endblock %}
+
+{% block body_contents %}
+<section>
+<form id="operat" action="" method="post">
+  <table class="table" width="100%" cellpadding="0" cellspacing="1">
+    <tr class="tabletitle">
+        <td align="center" nowrap>机构名称</td>
+        <td align="center" nowrap>更名老客户数</td>
+    </tr>
+    {% if not querys %}
+    <tr>
+      <td colspan="11" align="center" style="color: red">没有找到您需要的内容</td>
+    </tr>
+    {% else %}
+     {% for q in querys %}
+         <tr {% ifequal q.2 "PROVINCE" %}style="background-color:#C4D79B"{% endifequal %}>
+             <td align="center" nowrap>{{ q.1 | default_if_none:"" }}</td>
+             <td align="center" nowrap>
+                 {{ q.3 | default_if_none:"" }}
+             </td>
+        </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+</form>
+</section>
+{% endblock %}
+
+

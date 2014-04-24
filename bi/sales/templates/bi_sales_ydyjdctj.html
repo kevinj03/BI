@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+"""列表页面必须声明这个块定义"""
+{% block body_header_fixed %} class="fixed" {% endblock %}
+{% block head_style %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/script/skins/ui1007s.css"/>
+<link rel="stylesheet" type="text/css" href="/script/jscal/css/jscal2.css"/>
+<style type="text/css">
+	.err{color:#f00;}
+</style>
+{% endblock%}
+
+{% block head_script %}
+{{ block.super }}
+<script type="text/javascript" src="/script/validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/script/apps-10.8.js"></script>
+<script type="text/javascript" src="/script/jscal/jscal2.js"></script>
+<script type="text/javascript" src="/script/jscal/lang/cn.js"></script>
+
+<script type="text/javascript">
+
+
+$(document).ready(function()
+        {
+            changeMQ();
+        });
+function changeMQ(){
+    t = $("#year").val();
+    a = $("#month").val();
+    if(t == 2012 & a == 1){
+        $("#ago").hide();
+    }
+}
+</script>
+{% endblock %}
+{% block body_search %}
+<section id="serach-console">
+ <hgroup>
+        <form action="?method=search" method="get">
+            时间
+            <select id="year" name="year">
+                <option value="2012" {% if yy == 2012 %} selected{%endif%} >2012</option>
+                <option value="2013" {% if yy == 2013 %} selected{%endif%} >2013</option>
+                <option value="2014" {% if yy == 2014 %} selected{%endif%} >2014</option>
+                <option value="2015" {% if yy == 2015 %} selected{%endif%} >2015</option>
+                <option value="2016" {% if yy == 2016 %} selected{%endif%} >2016</option>
+                <option value="2017" {% if yy == 2017 %} selected{%endif%} >2017</option>
+            </select>
+            年
+            <select id="month" name="month">
+                <option value="1" {% if mm == 1 %} selected{%endif%} >1</option>
+                <option value="2" {% if mm == 2 %} selected{%endif%} >2</option>
+                <option value="3" {% if mm == 3 %} selected{%endif%} >3</option>
+                <option value="4" {% if mm == 4 %} selected{%endif%} >4</option>
+                <option value="5" {% if mm == 5 %} selected{%endif%} >5</option>
+                <option value="6" {% if mm == 6 %} selected{%endif%} >6</option>
+                <option value="7" {% if mm == 7 %} selected{%endif%} >7</option>
+                <option value="8" {% if mm == 8 %} selected{%endif%} >8</option>
+                <option value="9" {% if mm == 9 %} selected{%endif%} >9</option>
+                <option value="10" {% if mm == 10 %} selected{%endif%} >10</option>
+                <option value="11" {% if mm == 11 %} selected{%endif%} >11</option>
+                <option value="12" {% if mm == 12 %} selected{%endif%} >12</option>
+            </select>
+            月&nbsp;&nbsp;
+            <input type="submit" class="button" value="查询" />&nbsp;&nbsp;
+            <span id="ago">
+                <input type="button" value="上个月" class="btn" OnClick="location.href='?year={{ yy1 }}&month={{ mm1 }}'">&nbsp;
+            </span>
+            <input type="button" value="下个月" class="btn" OnClick="location.href='?year={{ yy2 }}&month={{ mm2 }}'">
+        </form>
+    </hgroup>
+</section>
+{% endblock %}
+
+{% block body_contents %}
+<section>
+<form id="operat" action="" method="post">
+  <table class="table" width="100%" cellpadding="0" cellspacing="1">
+    <tr>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">机构名称</th>
+        <th  colspan="2" align="center" nowrap class="tabletitle2">业绩总量</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">人均单产</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">人均创效</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">户均开户额</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">线索签单占比</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">单产环比</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">单产同比</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">销售额环比</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">销售额同比</th>
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">上线数</th>
+{#        <th  rowspan="2" align="center" nowrap class="tabletitle2">跟踪时长</th>#}
+{#        <th  rowspan="2" align="center" nowrap class="tabletitle2">户均跟踪时长</th>#}
+{#        <th  rowspan="2" align="center" nowrap class="tabletitle2">郊县签单占比</th>#}
+        <th  rowspan="2" align="center" nowrap class="tabletitle2">签单行业占比</th>
+    </tr>
+    <tr>
+        <th  align="center" nowrap class="tabletitle2">总单量</th>
+        <th  align="center" nowrap class="tabletitle2">销售额</th>
+    </tr>
+    {% if not querys %}
+    <tr>
+      <td colspan="13" align="center" style="color: red">没有找到您需要的内容</td>
+    </tr>
+    {% else %}
+     {% for q in querys %}
+        <tr {% ifequal q.0 100 %}style="background-color:#EBF1DE"{% endifequal %}>
+             <td align="center" nowrap id="company" >{{ q.1 | default_if_none:"" }}</td>
+             <td align="center" nowrap >{{ q.3 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.4 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.5 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.6 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.7| default_if_none:"" }}</td>
+             <td align="center" nowrap>
+                 {% if q.8 %}
+                   {{ q.8 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+             <td align="center" nowrap>
+                 {% if q.9 %}
+                   {{ q.9 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+             <td align="center" nowrap>
+                 {% if q.10 %}
+                   {{ q.10 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+             <td align="center" nowrap>
+                 {% if q.11 %}
+                   {{ q.11 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+             <td align="center" nowrap>
+                 {% if q.12 %}
+                   {{ q.12 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+             <td align="center" nowrap>
+                 {% if q.8 %}
+                   {{ q.8 }}%
+                 {% else %}
+                 {% endif %}
+             </td>
+        <td align="center" nowrap><a href="/v2/bi/sales/stat_qdhyzb?a={{ q.1 }}&b={{ q.0 }}&c={{ mm }}&d={{ yy }}" >签单行业占比</a></td>
+          </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+</form>
+</section>
+{% endblock %}
+
+    
+   

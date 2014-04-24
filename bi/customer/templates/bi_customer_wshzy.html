@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+"""列表页面必须声明这个块定义"""
+{% block body_header_fixed %} class="fixed" {% endblock %}
+{% block head_style %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/script/skins/ui1007s.css"/>
+<link rel="stylesheet" type="text/css" href="/script/jscal/css/jscal2.css"/>
+<style type="text/css">
+	.err{color:#f00;}
+</style>
+{% endblock%}
+
+{% block head_script %}
+{{ block.super }}
+<script type="text/javascript" src="/script/validation/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/script/apps-10.8.js"></script>
+<script type="text/javascript" src="/script/jscal/jscal2.js"></script>
+<script type="text/javascript" src="/script/jscal/lang/cn.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function()
+        {
+            changeMQ();
+        });
+function changeMQ(){
+    t = $("#year").val();
+    a = $("#month").val();
+    if(t == 2012 & a == 1){
+        $("#ago").hide();
+    }
+}
+
+</script>
+{% endblock %}
+{% block body_search %}
+<section id="serach-console">
+ <hgroup>
+        <form action="?method=search" method="get">
+            时间
+             <input type="text" name="sTime" id="sTime" size="10" value="{{sTime}}">
+            <script type="text/javascript">
+                Calendar.setup({
+                    inputField    : "sTime",
+                    trigger       : "sTime",
+                    showTime      : 24,
+                    dateFormat    : "%Y-%m-%d",
+                    onSelect   : function() { this.hide() }
+                });
+            </script>&nbsp;&nbsp;
+            <input type="submit" class="button" value="查询" />&nbsp;&nbsp;
+        </form>
+    </hgroup>
+</section>
+{% endblock %}
+
+{% block body_contents %}
+<section>
+<form id="operat" action="" method="post">
+  <table class="table" width="100%" cellpadding="0" cellspacing="1">
+    <tr class="tabletitle">
+        <td align="center" nowrap>机构名称</td>
+        <td align="center" nowrap>公共线索</td>
+        <td align="center" nowrap>普通跟进</td>
+        <td align="center" nowrap>签约跟进</td>
+        <td align="center" nowrap>签约老客户</td>
+         <td align="center" nowrap>总数</td>
+    </tr>
+    {% if not querys %}
+    <tr>
+      <td colspan="11" align="center" style="color: red">没有找到您需要的内容</td>
+    </tr>
+    {% else %}
+     {% for q in querys %}
+         <tr {% ifequal q.2 "PROVINCE" %}style="background-color:#C4D79B"{% endifequal %}>
+             <td align="center" nowrap>{{ q.1 | default_if_none:"" }}</td>
+             <td align="center" nowrap>
+                 {{ q.3 | default_if_none:"" }}
+             </td>
+             <td align="center" nowrap>{{ q.4 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.5 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.6 | default_if_none:"" }}</td>
+             <td align="center" nowrap>{{ q.7 | default_if_none:"" }}</td>
+        </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+</form>
+</section>
+{% endblock %}
+
+
